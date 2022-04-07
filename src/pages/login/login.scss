@@ -1,0 +1,20 @@
+.page-wrap {
+  height: 100%;
+  background-color: #000b23;
+}
+.title {
+  font-size: 28px;
+  padding: 20px 0 40px;
+  text-align: center;
+}
+.form-wrap {
+  width: 492px;
+  height: 429px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  border-radius: 4px;
+  padding: 28px 70px;
+}
