@@ -9,7 +9,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import Login from './pages/login/Login'
 import Goods from './pages/goods/Goods'
-import Home from './pages/home/Home'
+// import Home from './pages/home/Home'
 
 moment.locale('zh-cn');
 
@@ -21,7 +21,7 @@ root.render(
     <Routes>
       {/* 配置路由 */}
       <Route path="/" element={<App />}>
-        <Route index element={<Home />}></Route>
+        <Route index element={<Goods />}></Route>
         {/* 嵌套路由 */}
         <Route path="goods" element={<Goods />}></Route>
       </Route>

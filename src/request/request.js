@@ -22,7 +22,7 @@ function errorLog(error) {
 
 // 创建一个 axios 实例
 const service = axios.create({
-  baseURL: process.env.VUE_APP_BASE_API,
+  // baseURL: process.env.VUE_APP_BASE_API,
   headers: { 'Content-Type': 'application/json;charset=utf-8' },
   // headers:{"Content-Type": "multipart/form-data"},
   timeout: 60000 // 请求超时时间
