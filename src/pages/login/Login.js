@@ -11,6 +11,7 @@ function Login() {
     console.log('Success:', values);
     login(values).then(res => {
       localStorage.userInfo = JSON.stringify(res)
+      localStorage.token = res.jwt
       message.success('登录成功')
       navigate(`/`)
     })
