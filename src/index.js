@@ -8,8 +8,10 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import Login from './pages/login/Login'
-import Goods from './pages/goods/Goods'
-// import Home from './pages/home/Home'
+import GoodsList from './pages/goods/GoodsList'
+import AddGoods from './pages/goods/AddGoods'
+import EditGoods from './pages/goods/EditGoods'
+import UserList from './pages/user/UserList'
 
 moment.locale('zh-cn');
 
@@ -21,13 +23,17 @@ root.render(
     <Routes>
       {/* 配置路由 */}
       <Route path="/" element={<App />}>
-        <Route index element={<Goods />}></Route>
+        <Route index element={<GoodsList />}></Route>
         {/* 嵌套路由 */}
-        <Route path="goods" element={<Goods />}></Route>
+        <Route path="goods/list" element={<GoodsList />}></Route>
+        <Route path="goods/add-goods" element={<AddGoods />}></Route>
+        <Route path="goods/edit-goods" element={<EditGoods />}></Route>
+
+        <Route path="user/list" element={<UserList />}></Route>
       </Route>
       <Route path="/login" element={<Login />}></Route>
       {/* 匹配404 */}
-      <Route path="*" element={<App />} />
+      <Route path="*" element={<Login />} />
     </Routes>
   </HashRouter>
 );

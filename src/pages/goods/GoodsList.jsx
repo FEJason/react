@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Form, Input, Button, Select, Table } from "antd";
+import { Form, Input, Button, Select, Table, Tabs } from "antd";
 import { getCategory, getGoodsList } from "../../api/goods"
+import { Link } from "react-router-dom"
 import './Goods.scss'
 
 const { Option } = Select;
+const { TabPane } = Tabs;
 
 
 function Goods() {
@@ -13,6 +15,7 @@ function Goods() {
   const [tableLoading, setTableLoading] = useState(false)
   const [formData, setFormData] = useState({})
   
+  const [allNum, setAllNum] = useState(0)
   const [total, setTotal] = useState(0)
   const [pages, setPages] = useState({
     pageIndex: 1, 
@@ -28,22 +31,23 @@ function Goods() {
     },
     {
       title: '商品名称',
+      width: 400,
       dataIndex: 'name',
       render: (text, row) => (
-        <>
+        <div className="u-flex">
           <img src={row.primaryCommodityUrl} alt="img" style={{width: '50px', height: '50px', borderRadius: '5px'}} />
-          <span className="u-m-l-10">{row.name}</span>
-        </>
+          <span style={{width: '300px'}} className="u-m-l-10 u-line-1">{text}</span>
+        </div>
       )
     },
     {
       title: '状态',
       dataIndex: 'shelfStatus',
-      render: (text, row) => {
+      render: (text, row) => (
         <>
-          <span>{ 'text'  }</span>
+          <span>{text === 1 ? '上架销售中' : '已下架'}</span>
         </>
-      }
+      )
     },
     {
       title: '商品分类',
@@ -53,18 +57,19 @@ function Goods() {
       title: '操作',
       render: (text, row) => (
         <>
-          <Button>编辑</Button>
+          <Link to="/goods/add-goods">编辑</Link>
         </>
       ),
     },
   ];
 
   useEffect(() => {
+    console.log('执行第1个useEffect')
     getCategoryFn()
-    // getGoodsListFn()
   }, []);
 
   useEffect(() => {
+    console.log('执行第2个useEffect')
     getGoodsListFn()
   }, [pages, formData]) // 在 pages 更改时更新
 
@@ -74,6 +79,10 @@ function Goods() {
     })
   }
   const getGoodsListFn = () => {
+    console.log('formData', {
+      ...pages,
+      ...formData
+    })
     setTableLoading(true)
     getGoodsList({
       ...pages,
@@ -87,33 +96,52 @@ function Goods() {
         setTableLoading(false)
       })
   }
-
+  // 查询搜索
   const onFinish = (values) => {
-    console.log("Finish:", values);
-    setFormData(values)
-    console.log(formData)
+    console.log("查询values:", values);
+    console.log('查询formData', formData)
+    setPages({
+      pageIndex: 1, 
+      pageSize: 10
+    })
+    setFormData({
+      ...formData,
+      ...values
+    })
   };
-
+  // 重置
   const handleReset = () => {
-    console.log('重置')
     form.resetFields()
     setPages({
       pageIndex: 1, 
       pageSize: 10
     })
-    setFormData({})
+    setFormData({
+      shelfStatus: formData.shelfStatus
+    })
   }
 
   const onCodeChange = (value) => {
     console.log(value)
   }
 
-  const onStatusChange = (value) => {
-    console.log(value)
+  const tabChange = (key) => {
+    setFormData({
+      ...formData,
+      shelfStatus: key === '2' ? undefined : key
+    })
   }
 
   return (
     <div>
+      <Tabs defaultActiveKey="2" size="large" onChange={tabChange}>
+        <TabPane tab={`全部`} key="2">
+        </TabPane>
+        <TabPane tab="上架销售中" key="1">
+        </TabPane>
+        <TabPane tab="已下架" key="0">
+        </TabPane>
+      </Tabs>
       <div className="page-top u-p-t-24 u-p-b-48">
         <Form
           form={form}
@@ -143,28 +171,17 @@ function Goods() {
               }
             </Select>
           </Form.Item>
-          <Form.Item name="shelfStatus" label="商品状态">
-            <Select
-              style={{width: '150px'}}
-              placeholder="商品状态"
-              onChange={onStatusChange}
-              allowClear
-            >
-              <Option value="1">上架</Option>
-              <Option value="0">下架</Option>
-            </Select>
-          </Form.Item>
           <Form.Item shouldUpdate className="u-m-l-40">
             {() => (
               <Button onClick={handleReset}>
-                重置搜索
+                重置
               </Button>
             )}
           </Form.Item>
           <Form.Item shouldUpdate>
             {() => (
               <Button type="primary" htmlType="submit">
-                查询搜索
+                查询
               </Button>
             )}
           </Form.Item>
